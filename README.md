@@ -2,12 +2,7 @@
 
 PayU is a modern Android personal finance app for tracking income, expenses, payment methods, balances, and spending patterns. It is built with Jetpack Compose and designed to make day-to-day money management feel visual, fast, and easy to understand.
 
-## GitHub Submission Checklist
 
-- Proper README
-- Setup instructions
-- Feature list
-- Screenshots of app screens
 
 ## What PayU Does
 
@@ -40,33 +35,40 @@ The app centers around a few core ideas:
 
 ## Screenshots
 
-Place your screenshots in a folder named `screenshots` at the project root.
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/60a96177-65fc-4984-ad5c-5e23469357f1" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/6d34dcba-79dd-4c5e-b26a-418863143f5b" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/bfe1acc7-9980-4924-adec-18009d0eb8d2" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/3d25099b-2f98-4946-8b37-b69d25662d13" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/061c7145-0747-4435-8095-d7944729712b" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c4084ae3-e1f0-4f86-bad3-8d05b0d0da84" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/0ea38a97-de49-4dd7-b384-f1ec85129d16" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/911c4950-2ef7-4f58-a372-5a6d78d2a0e3" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/0eeecec2-0396-44db-9f6e-f9d608c63c01" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/1a6ab46d-86fb-4aef-b17d-d15471141597" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/677f8a41-948e-43e2-91fe-f17381f439b6" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c1b709e8-167f-470e-a446-77825a179fc7" width="200"/></td>
+  </tr>
+</table>
 
-Example:
 
-```text
-payU/
-  screenshots/
-    01-home.png
-    02-hero-card.png
-    03-add-transaction.png
-    04-calendar.png
-    05-profile.png
-```
 
-Then reference them in this section like this:
 
-```md
-![Home Screen](screenshots/01-home.png)
-![Hero Card](screenshots/02-hero-card.png)
-![Add Transaction](screenshots/03-add-transaction.png)
-![Calendar Heatmap](screenshots/04-calendar.png)
-![Profile Screen](screenshots/05-profile.png)
-```
+
+
+
 
 ## Feature List
 
 ### 1. Home Dashboard
+
 
 The home screen is the main financial overview screen. It combines spending summaries, payment method cards, and transaction history in one place.
 
@@ -392,28 +394,18 @@ app/src/main/java/com/sarthak/payu/
 - The app uses local storage for transactions and payment methods.
 - No external backend is required for the current version.
 
-## Screenshot Placement Suggestion
 
-Once you add screenshots, a good ordering is:
-
-1. Home dashboard
-2. Hero card flip
-3. Add transaction screen
-4. Payment methods drawer
-5. Calendar heatmap
-6. Profile screen
-
-## Future Ideas
-
-Possible next steps for PayU:
-
-- calendar month navigation
-- better analytics charts
-- category-wise spending insights
-- export transactions
-- recurring expense tracking
-- richer financial score explanations
 
 ## License
 
-Add a license here if you want to publish the project publicly.
+MIT License
+
+Copyright (c) 2026 Sarthak Singh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE
+
+
