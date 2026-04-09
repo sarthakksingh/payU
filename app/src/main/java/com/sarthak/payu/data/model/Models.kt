@@ -110,3 +110,8 @@ data class UserProfile(
     val email: String,
     val totalBalance: Double
 )
+
+data class SavedProfile(
+    val name: String,
+    val email: String
+)

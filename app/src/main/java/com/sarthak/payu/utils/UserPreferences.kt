@@ -6,8 +6,10 @@ import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
 import com.sarthak.payu.data.model.PaymentMethod
 import com.sarthak.payu.data.model.PaymentMethodType
+import com.sarthak.payu.data.model.SavedProfile
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import org.json.JSONArray
 import org.json.JSONObject
@@ -28,6 +30,7 @@ class UserPreferences @Inject constructor(
         val KEY_IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
         val KEY_TOTAL_BALANCE = doublePreferencesKey("total_balance")
         val KEY_PAYMENT_METHODS = stringPreferencesKey("payment_methods") // JSON array
+        val KEY_REGISTERED_PROFILES = stringPreferencesKey("registered_profiles") // JSON array
     }
 
     val userName: Flow<String> = context.dataStore.data.map { it[KEY_USER_NAME] ?: "" }
@@ -35,6 +38,9 @@ class UserPreferences @Inject constructor(
     val isDarkMode: Flow<Boolean> = context.dataStore.data.map { it[KEY_IS_DARK_MODE] ?: true }
     val isLoggedIn: Flow<Boolean> = context.dataStore.data.map { it[KEY_IS_LOGGED_IN] ?: false }
     val totalBalance: Flow<Double> = context.dataStore.data.map { it[KEY_TOTAL_BALANCE] ?: 0.0 }
+    val registeredProfiles: Flow<List<SavedProfile>> = context.dataStore.data.map { prefs ->
+        parseRegisteredProfiles(prefs[KEY_REGISTERED_PROFILES] ?: "[]")
+    }
 
     val paymentMethods: Flow<List<PaymentMethod>> = context.dataStore.data.map { prefs ->
         val json = prefs[KEY_PAYMENT_METHODS] ?: return@map emptyList()
@@ -47,8 +53,17 @@ class UserPreferences @Inject constructor(
 
     suspend fun saveUser(name: String, email: String) {
         context.dataStore.edit { prefs ->
-            prefs[KEY_USER_NAME] = name
-            prefs[KEY_USER_EMAIL] = email
+            val currentProfiles = parseRegisteredProfiles(prefs[KEY_REGISTERED_PROFILES] ?: "[]").toMutableList()
+            val existingIndex = currentProfiles.indexOfFirst { it.email.equals(email, ignoreCase = true) }
+            val normalized = SavedProfile(name = name.trim().ifBlank { email.substringBefore("@") }, email = email.trim())
+            if (existingIndex >= 0) {
+                currentProfiles[existingIndex] = normalized
+            } else {
+                currentProfiles.add(normalized)
+            }
+            prefs[KEY_REGISTERED_PROFILES] = serializeRegisteredProfiles(currentProfiles)
+            prefs[KEY_USER_NAME] = normalized.name
+            prefs[KEY_USER_EMAIL] = normalized.email
             prefs[KEY_IS_LOGGED_IN] = true
         }
     }
@@ -129,6 +144,23 @@ class UserPreferences @Inject constructor(
         }
     }
 
+    suspend fun getRegisteredProfile(email: String): SavedProfile? {
+        val prefs = context.dataStore.data.first()
+        return parseRegisteredProfiles(prefs[KEY_REGISTERED_PROFILES] ?: "[]")
+            .firstOrNull { it.email.equals(email, ignoreCase = true) }
+    }
+
+    suspend fun getKnownProfile(email: String): SavedProfile? {
+        val current = context.dataStore.data.first()
+        val currentEmail = current[KEY_USER_EMAIL]?.trim().orEmpty()
+        val currentName = current[KEY_USER_NAME]?.trim().orEmpty()
+        if (currentEmail.equals(email.trim(), ignoreCase = true) && currentName.isNotBlank()) {
+            return SavedProfile(name = currentName, email = currentEmail)
+        }
+        return parseRegisteredProfiles(current[KEY_REGISTERED_PROFILES] ?: "[]")
+            .firstOrNull { it.email.equals(email, ignoreCase = true) }
+    }
+
     // ── JSON helpers ───────────────────────────────────────────
 
     private fun serializePaymentMethods(list: List<PaymentMethod>): String {
@@ -166,6 +198,32 @@ class UserPreferences @Inject constructor(
                     cardNumber = obj.optString("cardNumber", "xxxx xxxx xxxx xxxx"),
                     cvv = obj.optString("cvv", "xxx"),
                     expiryDate = obj.optString("expiryDate", "xx/xx")
+                )
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun serializeRegisteredProfiles(list: List<SavedProfile>): String {
+        val arr = JSONArray()
+        list.forEach { profile ->
+            arr.put(JSONObject().apply {
+                put("name", profile.name)
+                put("email", profile.email)
+            })
+        }
+        return arr.toString()
+    }
+
+    private fun parseRegisteredProfiles(json: String): List<SavedProfile> {
+        return try {
+            val arr = JSONArray(json)
+            (0 until arr.length()).map { i ->
+                val obj = arr.getJSONObject(i)
+                SavedProfile(
+                    name = obj.optString("name", ""),
+                    email = obj.optString("email", "")
                 )
             }
         } catch (e: Exception) {

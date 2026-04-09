@@ -110,6 +110,10 @@ fun AuthScreen(
         if (state.isSuccess) onAuthSuccess()
     }
 
+    LaunchedEffect(state.needsRegistration) {
+        if (state.needsRegistration) selectedTab = 1
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -378,6 +382,16 @@ fun AuthScreen(
                                     "Continue with Google",
                                     fontWeight = FontWeight.SemiBold,
                                     fontSize = 15.sp
+                                )
+                            }
+
+                            val authMessage = state.errorMessage
+                            if (!authMessage.isNullOrBlank()) {
+                                Text(
+                                    text = authMessage,
+                                    color = Color(0xFFFF6B6B),
+                                    fontSize = 12.sp,
+                                    modifier = Modifier.padding(top = 4.dp)
                                 )
                             }
                         }

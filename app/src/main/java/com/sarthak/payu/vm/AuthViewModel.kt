@@ -22,6 +22,7 @@ data class AuthUiState(
     val confirmPasswordError: String? = null,
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
+    val needsRegistration: Boolean = false,
     val errorMessage: String? = null
 )
 
@@ -62,25 +63,37 @@ class AuthViewModel @Inject constructor(
     }
 
     fun handleGoogleSignInResult(intent: Intent?) {
-        if (intent == null) {
-            _state.update { it.copy(errorMessage = "Google sign-in cancelled") }
-            return
-        }
-
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, errorMessage = null) }
-            val result = googleAuthClient.signInWithIntent(intent)
+            _state.update { it.copy(isLoading = true, errorMessage = null, needsRegistration = false) }
+            val result = if (intent != null) {
+                googleAuthClient.signInWithIntent(intent)
+            } else {
+                googleAuthClient.getCurrentUserFallback()
+            }
             if (result != null) {
-                prefs.saveUser(
-                    name = result.displayName ?: result.email?.substringBefore("@") ?: "User",
-                    email = result.email.orEmpty()
-                )
-                _state.update { it.copy(isLoading = false, isSuccess = true) }
+                val email = result.email.orEmpty().trim()
+                val storedProfile = if (email.isNotBlank()) prefs.getKnownProfile(email) else null
+                if (storedProfile != null) {
+                    prefs.saveUser(storedProfile.name, storedProfile.email)
+                    _state.update { it.copy(isLoading = false, isSuccess = true) }
+                } else {
+                    val suggestedName = result.displayName?.takeIf { it.isNotBlank() }
+                        ?: email.substringBefore("@").replaceFirstChar { it.uppercase() }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            name = suggestedName,
+                            email = email,
+                            needsRegistration = true,
+                            errorMessage = "Google account not registered yet. Please complete sign up."
+                        )
+                    }
+                }
             } else {
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "Google sign-in failed"
+                        errorMessage = "Google sign-in cancelled"
                     )
                 }
             }
@@ -88,25 +101,37 @@ class AuthViewModel @Inject constructor(
     }
 
     fun handleLegacyGoogleSignInResult(intent: Intent?) {
-        if (intent == null) {
-            _state.update { it.copy(errorMessage = "Google sign-in cancelled") }
-            return
-        }
-
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, errorMessage = null) }
-            val result = googleAuthClient.signInWithLegacyIntent(intent)
+            _state.update { it.copy(isLoading = true, errorMessage = null, needsRegistration = false) }
+            val result = if (intent != null) {
+                googleAuthClient.signInWithLegacyIntent(intent)
+            } else {
+                googleAuthClient.getCurrentUserFallback()
+            }
             if (result != null) {
-                prefs.saveUser(
-                    name = result.displayName ?: result.email?.substringBefore("@") ?: "User",
-                    email = result.email.orEmpty()
-                )
-                _state.update { it.copy(isLoading = false, isSuccess = true) }
+                val email = result.email.orEmpty().trim()
+                val storedProfile = if (email.isNotBlank()) prefs.getKnownProfile(email) else null
+                if (storedProfile != null) {
+                    prefs.saveUser(storedProfile.name, storedProfile.email)
+                    _state.update { it.copy(isLoading = false, isSuccess = true) }
+                } else {
+                    val suggestedName = result.displayName?.takeIf { it.isNotBlank() }
+                        ?: email.substringBefore("@").replaceFirstChar { it.uppercase() }
+                    _state.update {
+                        it.copy(
+                            isLoading = false,
+                            name = suggestedName,
+                            email = email,
+                            needsRegistration = true,
+                            errorMessage = "Google account not registered yet. Please complete sign up."
+                        )
+                    }
+                }
             } else {
                 _state.update {
                     it.copy(
                         isLoading = false,
-                        errorMessage = "Google sign-in failed"
+                        errorMessage = "Google sign-in cancelled"
                     )
                 }
             }
@@ -136,7 +161,9 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
             kotlinx.coroutines.delay(800)
-            val name = s.email.substringBefore("@").replaceFirstChar { it.uppercase() }
+            val storedProfile = prefs.getKnownProfile(s.email)
+            val name = storedProfile?.name?.takeIf { it.isNotBlank() }
+                ?: s.email.substringBefore("@").replaceFirstChar { it.uppercase() }
             prefs.saveUser(name, s.email)
             _state.update { it.copy(isLoading = false, isSuccess = true) }
         }

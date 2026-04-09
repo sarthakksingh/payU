@@ -74,14 +74,22 @@ class GoogleAuthClient @Inject constructor(
     suspend fun signInWithLegacyIntent(intent: Intent): GoogleSignInResult? {
         return try {
             val account = GoogleSignIn.getSignedInAccountFromIntent(intent).getResult(ApiException::class.java)
-            val googleIdToken = account.idToken ?: return null
-            val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
-            val authResult = auth.signInWithCredential(firebaseCredential).await()
-            val user = authResult.user ?: return null
+            val googleIdToken = account.idToken
+            val authResult = try {
+                if (googleIdToken != null) {
+                    val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+                    auth.signInWithCredential(firebaseCredential).await()
+                } else {
+                    null
+                }
+            } catch (_: Exception) {
+                null
+            }
+            val user = authResult?.user
             GoogleSignInResult(
-                displayName = user.displayName,
-                email = user.email,
-                isNewUser = authResult.additionalUserInfo?.isNewUser == true
+                displayName = user?.displayName ?: account.displayName,
+                email = user?.email ?: account.email,
+                isNewUser = authResult?.additionalUserInfo?.isNewUser == true
             )
         } catch (e: Exception) {
             null
@@ -92,13 +100,19 @@ class GoogleAuthClient @Inject constructor(
         return try {
             val credential = oneTapClient.getSignInCredentialFromIntent(intent)
             val googleIdToken = credential.googleIdToken ?: return null
-            val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
-            val authResult = auth.signInWithCredential(firebaseCredential).await()
-            val user = authResult.user ?: return null
+            val fallbackName = credential.displayName
+            val fallbackEmail = credential.id
+            val authResult = try {
+                val firebaseCredential = GoogleAuthProvider.getCredential(googleIdToken, null)
+                auth.signInWithCredential(firebaseCredential).await()
+            } catch (_: Exception) {
+                null
+            }
+            val user = authResult?.user
             GoogleSignInResult(
-                displayName = user.displayName,
-                email = user.email,
-                isNewUser = authResult.additionalUserInfo?.isNewUser == true
+                displayName = user?.displayName ?: fallbackName,
+                email = user?.email ?: fallbackEmail,
+                isNewUser = authResult?.additionalUserInfo?.isNewUser == true
             )
         } catch (e: Exception) {
             null
@@ -113,4 +127,12 @@ class GoogleAuthClient @Inject constructor(
     fun isSignedIn(): Boolean = auth.currentUser != null
     fun getCurrentUserName(): String? = auth.currentUser?.displayName
     fun getCurrentUserEmail(): String? = auth.currentUser?.email
+    fun getCurrentUserFallback(): GoogleSignInResult? {
+        val user = auth.currentUser ?: return null
+        return GoogleSignInResult(
+            displayName = user.displayName,
+            email = user.email,
+            isNewUser = false
+        )
+    }
 }
