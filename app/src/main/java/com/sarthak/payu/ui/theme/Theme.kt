@@ -24,15 +24,22 @@ val DarkCard = Color(0xFF222222)
 val DarkBorder = Color(0xFF2A2A2A)
 
 // Light theme surfaces
-val LightBg = Color(0xFFF5F5F5)
-val LightSurface = Color(0xFFFFFFFF)
-val LightCard = Color(0xFFFFFFFF)
+val LightBg = Color(0xFFF2F0EA)
+val LightSurface = Color(0xFFFCFBF8)
+val LightCard = Color(0xFFEDE8E1)
+val LightBorder = Color(0xFFDCD7CF)
 
 // Text
 val TextPrimary = Color(0xFFFFFFFF)
 val TextSecondary = Color(0xFF9CA3AF)
 val TextPrimaryLight = Color(0xFF111827)
 val TextSecondaryLight = Color(0xFF6B7280)
+val TextTertiaryLight = Color(0xFF9AA0A6)
+
+// Light card gradient used for prominent account cards
+val CardGradientLightStart = Color(0xFFB49AF8)
+val CardGradientLightMid = Color(0xFF5B6EEB)
+val CardGradientLightEnd = Color(0xFF35A6E8)
 
 // ── Color Schemes ─────────────────────────────────────────────
 private val DarkColorScheme = darkColorScheme(
@@ -49,16 +56,16 @@ private val DarkColorScheme = darkColorScheme(
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = TealGreenDark,
-    secondary = PinkAccent,
-    tertiary = PurpleAccent,
+    primary = Color(0xFF11857A),
+    secondary = Color(0xFFCA2E78),
+    tertiary = Color(0xFF6D4ACF),
     background = LightBg,
     surface = LightSurface,
     surfaceVariant = LightCard,
     onBackground = TextPrimaryLight,
     onSurface = TextPrimaryLight,
     onPrimary = Color.White,
-    outline = Color(0xFFE5E7EB)
+    outline = LightBorder
 )
 
 @Composable

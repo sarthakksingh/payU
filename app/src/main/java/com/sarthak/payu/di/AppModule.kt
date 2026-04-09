@@ -5,6 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.sarthak.payu.data.local.PayUDatabase
 import com.sarthak.payu.data.local.dao.TransactionDao
+import com.sarthak.payu.utils.GoogleAuthClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,4 +27,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideTransactionDao(db: PayUDatabase): TransactionDao = db.transactionDao()
+
+    @Provides
+    @Singleton
+    fun provideGoogleAuthClient(@ApplicationContext context: Context): GoogleAuthClient =
+        GoogleAuthClient(context)
 }

@@ -1,7 +1,5 @@
 package com.sarthak.payu.data.local.entity
 
-
-
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.sarthak.payu.data.model.Category
@@ -17,7 +15,8 @@ data class TransactionEntity(
     val category: String,
     val type: String,
     val note: String,
-    val date: String, // ISO format yyyy-MM-dd
+    val date: String,
+    val paymentMethodId: String? = null,
     val createdAt: Long = System.currentTimeMillis()
 )
 
@@ -28,6 +27,7 @@ fun TransactionEntity.toDomain() = Transaction(
     type = TransactionType.valueOf(type),
     note = note,
     date = LocalDate.parse(date),
+    paymentMethodId = paymentMethodId,
     createdAt = createdAt
 )
 
@@ -38,5 +38,6 @@ fun Transaction.toEntity() = TransactionEntity(
     type = type.name,
     note = note,
     date = date.toString(),
+    paymentMethodId = paymentMethodId,
     createdAt = createdAt
 )

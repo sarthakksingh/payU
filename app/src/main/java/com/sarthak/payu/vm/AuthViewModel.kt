@@ -1,10 +1,11 @@
 package com.sarthak.payu.vm
 
-
-
+import android.content.Intent
+import androidx.activity.result.IntentSenderRequest
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.payu.util.UserPreferences
+import com.sarthak.payu.utils.GoogleAuthClient
+import com.sarthak.payu.utils.UserPreferences
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -26,7 +27,8 @@ data class AuthUiState(
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    private val prefs: UserPreferences
+    private val prefs: UserPreferences,
+    private val googleAuthClient: GoogleAuthClient
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AuthUiState())
@@ -34,6 +36,82 @@ class AuthViewModel @Inject constructor(
 
     val isLoggedIn: StateFlow<Boolean> = prefs.isLoggedIn
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), false)
+
+    val isDarkMode: StateFlow<Boolean> = prefs.isDarkMode
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), true)
+
+    fun toggleDarkMode() {
+        viewModelScope.launch {
+            val current = prefs.isDarkMode.first()
+            prefs.toggleDarkMode(!current)
+        }
+    }
+
+    fun setDarkMode(isDark: Boolean) {
+        viewModelScope.launch {
+            prefs.toggleDarkMode(isDark)
+        }
+    }
+
+    suspend fun getGoogleSignInSender(): IntentSenderRequest? {
+        return googleAuthClient.getSignInIntentSender()
+    }
+
+    fun getLegacyGoogleSignInIntent(): Intent? {
+        return googleAuthClient.getLegacySignInIntent()
+    }
+
+    fun handleGoogleSignInResult(intent: Intent?) {
+        if (intent == null) {
+            _state.update { it.copy(errorMessage = "Google sign-in cancelled") }
+            return
+        }
+
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, errorMessage = null) }
+            val result = googleAuthClient.signInWithIntent(intent)
+            if (result != null) {
+                prefs.saveUser(
+                    name = result.displayName ?: result.email?.substringBefore("@") ?: "User",
+                    email = result.email.orEmpty()
+                )
+                _state.update { it.copy(isLoading = false, isSuccess = true) }
+            } else {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Google sign-in failed"
+                    )
+                }
+            }
+        }
+    }
+
+    fun handleLegacyGoogleSignInResult(intent: Intent?) {
+        if (intent == null) {
+            _state.update { it.copy(errorMessage = "Google sign-in cancelled") }
+            return
+        }
+
+        viewModelScope.launch {
+            _state.update { it.copy(isLoading = true, errorMessage = null) }
+            val result = googleAuthClient.signInWithLegacyIntent(intent)
+            if (result != null) {
+                prefs.saveUser(
+                    name = result.displayName ?: result.email?.substringBefore("@") ?: "User",
+                    email = result.email.orEmpty()
+                )
+                _state.update { it.copy(isLoading = false, isSuccess = true) }
+            } else {
+                _state.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = "Google sign-in failed"
+                    )
+                }
+            }
+        }
+    }
 
     fun onNameChange(v: String) = _state.update { it.copy(name = v, nameError = null) }
     fun onEmailChange(v: String) = _state.update { it.copy(email = v, emailError = null) }
@@ -57,7 +135,6 @@ class AuthViewModel @Inject constructor(
 
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true) }
-            // Simulate auth — replace with real auth if needed
             kotlinx.coroutines.delay(800)
             val name = s.email.substringBefore("@").replaceFirstChar { it.uppercase() }
             prefs.saveUser(name, s.email)

@@ -1,9 +1,7 @@
 package com.sarthak.payu.data.local.dao
 
-
 import androidx.room.*
 import com.sarthak.payu.data.local.entity.TransactionEntity
-
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -17,6 +15,9 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE date >= :startDate ORDER BY createdAt DESC")
     fun getTransactionsSince(startDate: String): Flow<List<TransactionEntity>>
+
+    @Query("SELECT * FROM transactions WHERE paymentMethodId = :methodId ORDER BY createdAt DESC")
+    fun getTransactionsByPaymentMethod(methodId: String): Flow<List<TransactionEntity>>
 
     @Query("SELECT * FROM transactions WHERE type = 'INCOME' AND date LIKE :yearMonth || '%'")
     fun getIncomeByMonth(yearMonth: String): Flow<List<TransactionEntity>>

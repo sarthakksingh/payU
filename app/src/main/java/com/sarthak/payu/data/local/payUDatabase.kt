@@ -10,7 +10,7 @@ import com.sarthak.payu.data.local.entity.TransactionEntity
 
 @Database(
     entities = [TransactionEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class PayUDatabase : RoomDatabase() {
