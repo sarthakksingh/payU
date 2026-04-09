@@ -33,35 +33,18 @@ The app centers around a few core ideas:
 - The app currently uses local storage for transactions, profiles, and payment methods.
 - No backend setup is required.
 
-## Screenshots
+#Screenshots
+<table> <tr> <td><img src="https://github.com/user-attachments/assets/23955357-eded-4871-94b0-f5e1f872edae" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/bb8cc872-05b9-4fa2-b7de-1fb43e3e613c" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/06bb8809-4e54-40f0-9ab7-3500caa0a0c6" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/c70ee18d-c8ea-41ac-90db-68d2693b66d0" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/aa07267b-92b8-4886-90ad-248c5f3766fc" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/b8a9d21c-fdc8-4d2f-8bd0-865ca7ce9282" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/b9a69763-aa53-4b97-9543-c80f92413391" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/093b8f7c-c222-4277-b146-941c671f482f" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/49c3aacc-e37e-4175-868c-c12331010e61" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/35fff888-fcd4-412d-8b60-bdee5ccb7ba3" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/fbbb97c1-7530-41e3-b3e8-e909eb38e2ab" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/42fdf72f-6817-495a-bacc-d3d89736e019" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/f3eae1a3-5395-4d5a-84c3-ae937576bbfe" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/f0a02b92-7cf8-42c9-8f8a-eadfa15077f0" width="200"/></td> <td></td> </tr> </table>
 
-Place your screenshots in a folder named `screenshots` at the project root.
 
-Example:
 
-```text
-payU/
-  screenshots/
-    01-home.png
-    02-hero-card.png
-    03-add-transaction.png
-    04-calendar.png
-    05-profile.png
-```
 
-Then reference them in this section like this:
 
-```md
-![Home Screen](screenshots/01-home.png)
-![Hero Card](screenshots/02-hero-card.png)
-![Add Transaction](screenshots/03-add-transaction.png)
-![Calendar Heatmap](screenshots/04-calendar.png)
-![Profile Screen](screenshots/05-profile.png)
-```
 
 ## Feature List
 
 ### 1. Home Dashboard
+
 
 The home screen is the main financial overview screen. It combines spending summaries, payment method cards, and transaction history in one place.
 
@@ -387,16 +370,6 @@ app/src/main/java/com/sarthak/payu/
 - The app uses local storage for transactions and payment methods.
 - No external backend is required for the current version.
 
-## Screenshot Placement Suggestion
-
-Once you add screenshots, a good ordering is:
-
-1. Home dashboard
-2. Hero card flip
-3. Add transaction screen
-4. Payment methods drawer
-5. Calendar heatmap
-6. Profile screen
 
 ## Future Ideas
 
