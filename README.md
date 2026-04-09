@@ -371,16 +371,6 @@ app/src/main/java/com/sarthak/payu/
 - No external backend is required for the current version.
 
 
-## Future Ideas
-
-Possible next steps for PayU:
-
-- calendar month navigation
-- better analytics charts
-- category-wise spending insights
-- export transactions
-- recurring expense tracking
-- richer financial score explanations
 
 ## License
 
