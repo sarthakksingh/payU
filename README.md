@@ -33,8 +33,32 @@ The app centers around a few core ideas:
 - The app currently uses local storage for transactions, profiles, and payment methods.
 - No backend setup is required.
 
-#Screenshots
-<table> <tr> <td><img src="https://github.com/user-attachments/assets/23955357-eded-4871-94b0-f5e1f872edae" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/bb8cc872-05b9-4fa2-b7de-1fb43e3e613c" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/06bb8809-4e54-40f0-9ab7-3500caa0a0c6" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/c70ee18d-c8ea-41ac-90db-68d2693b66d0" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/aa07267b-92b8-4886-90ad-248c5f3766fc" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/b8a9d21c-fdc8-4d2f-8bd0-865ca7ce9282" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/b9a69763-aa53-4b97-9543-c80f92413391" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/093b8f7c-c222-4277-b146-941c671f482f" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/49c3aacc-e37e-4175-868c-c12331010e61" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/35fff888-fcd4-412d-8b60-bdee5ccb7ba3" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/fbbb97c1-7530-41e3-b3e8-e909eb38e2ab" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/42fdf72f-6817-495a-bacc-d3d89736e019" width="200"/></td> </tr> <tr> <td><img src="https://github.com/user-attachments/assets/f3eae1a3-5395-4d5a-84c3-ae937576bbfe" width="200"/></td> <td><img src="https://github.com/user-attachments/assets/f0a02b92-7cf8-42c9-8f8a-eadfa15077f0" width="200"/></td> <td></td> </tr> </table>
+## Screenshots
+
+<table>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/60a96177-65fc-4984-ad5c-5e23469357f1" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/6d34dcba-79dd-4c5e-b26a-418863143f5b" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/bfe1acc7-9980-4924-adec-18009d0eb8d2" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/3d25099b-2f98-4946-8b37-b69d25662d13" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/061c7145-0747-4435-8095-d7944729712b" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c4084ae3-e1f0-4f86-bad3-8d05b0d0da84" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/0ea38a97-de49-4dd7-b384-f1ec85129d16" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/911c4950-2ef7-4f58-a372-5a6d78d2a0e3" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/0eeecec2-0396-44db-9f6e-f9d608c63c01" width="200"/></td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/user-attachments/assets/1a6ab46d-86fb-4aef-b17d-d15471141597" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/677f8a41-948e-43e2-91fe-f17381f439b6" width="200"/></td>
+    <td><img src="https://github.com/user-attachments/assets/c1b709e8-167f-470e-a446-77825a179fc7" width="200"/></td>
+  </tr>
+</table>
+
+
 
 
 
