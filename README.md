@@ -2,12 +2,7 @@
 
 PayU is a modern Android personal finance app for tracking income, expenses, payment methods, balances, and spending patterns. It is built with Jetpack Compose and designed to make day-to-day money management feel visual, fast, and easy to understand.
 
-## GitHub Submission Checklist
 
-- Proper README
-- Setup instructions
-- Feature list
-- Screenshots of app screens
 
 ## What PayU Does
 
